@@ -1,0 +1,30 @@
+[
+  {
+    "id": "incident-checkout-migration-2026-06-14",
+    "type": "deployment_incident",
+    "title": "Checkout service database migration failure",
+    "date": "2026-06-14",
+    "service": "checkout-service",
+    "environment": "production",
+    "release": "checkout-service v4.1.0",
+    "change": "Added a database column migration and increased the database connection pool from 40 to 80 connections.",
+    "what_happened": "Twenty minutes after deployment, checkout latency increased and approximately 18 percent of checkout requests timed out.",
+    "failed_fix": "Increasing the connection pool from 80 to 120 connections did not solve the issue and increased database contention.",
+    "successful_fix": "The team rolled back the application, paused the migration, later ran the migration separately, and deployed the application gradually beginning with 10 percent of production traffic.",
+    "lesson": "Do not combine a database migration with a direct full-traffic deployment for checkout-service. Increasing the connection pool is not an effective fix for this failure pattern."
+  },
+  {
+    "id": "deployment-checkout-staged-success-2026-07-02",
+    "type": "successful_deployment",
+    "title": "Checkout service staged migration success",
+    "date": "2026-07-02",
+    "service": "checkout-service",
+    "environment": "production",
+    "release": "checkout-service v4.1.2",
+    "change": "Applied a database migration using a staged deployment approach.",
+    "what_happened": "The migration was validated separately and the application was initially released to 10 percent of production traffic.",
+    "failed_fix": "No failed fix was required.",
+    "successful_fix": "The team separated the migration from the application rollout, monitored connections and checkout latency, and increased traffic gradually.",
+    "lesson": "For checkout-service releases involving database changes, use staged migration, connection monitoring, and gradual traffic shifting."
+  }
+]
